@@ -4,7 +4,6 @@ function getPokemonInfo(input) {
     axios.get(`https://pokeapi.co/api/v2/pokemon/${input}`)
         .then(response => {
             if(response.status === 200) {
-            //pokeIntro code
                 let main = document.getElementById("main");
                 let reset = 
                     `<section id="pokeIntro">
@@ -15,18 +14,59 @@ function getPokemonInfo(input) {
                         <section id="pokeMisc">
                         </section>
                     </div>`
-                main.innerHTML = reset;
+                main.innerHTML = reset; 
+            //Seciton background
+                let mainType = response.data.types[0].type.name;
+                if(mainType == "fighting") {
+                    main.style.backgroundColor = "rgba(219, 130, 130, 0.836)";
+                } else if(mainType == "flying") {
+                    main.style.backgroundColor = "rgba(183, 189, 204, 0.836)"; 
+                }else if(mainType == "poison"){
+                    main.style.backgroundColor = "rgba(209, 130, 219, 0.836)";
+                } else if (mainType == "ground") {
+                    main.style.backgroundColor = "rgba(226, 171, 99, 0.836)";
+                }else if (mainType == "bug"){
+                    main.style.backgroundColor = "rgba(117, 175, 105, 0.836)";
+                }else if(mainType == "ghost") {
+                    main.style.backgroundColor = "rgba(228, 228, 228, 0.536)";
+                } else if(mainType == "steel") {
+                    main.style.backgroundColor = "rgba(172, 172, 172, 0.836)";
+                }else if(mainType == "fire") {
+                    main.style.backgroundColor = "rgba(245, 81, 81, 0.836)";
+                }else if(mainType == "water") {
+                    main.style.backgroundColor = "rgba(115, 140, 255, 0.836)";
+                }else if(mainType == "grass") {
+                    main.style.backgroundColor = "rgba(177, 255, 146, 0.836)";
+                }else if(mainType == "electric") {
+                    main.style.backgroundColor = "rgba(238, 255, 2, 0.836)";
+                }else if(mainType == "psychic") {
+                    main.style.backgroundColor = "rgba(220, 183, 228, 0.836)";
+                }else if(mainType == "ice") {
+                    main.style.backgroundColor = "rgba(164, 234, 255, 0.836)";
+                }else if(mainType == "dragon") {
+                    main.style.backgroundColor = "rgba(127, 139, 245, 0.836)";
+                }else if(mainType == "dark") {
+                    main.style.backgroundColor = "rgba(128, 128, 128, 0.836)";
+                }else if(mainType == "fairy") {
+                    main.style.backgroundColor = "rgba(247, 160, 239, 0.836)";
+                }else if(mainType == "shadow") {
+                    main.style.backgroundColor = "rgba(128, 128, 128, 0.836)";
+                } else {
+                    main.style.backgroundColor = "rgba(245, 245, 245, 0.836)";
+                }
+                let pokeId = response.data.id;
+            //pokeIntro code
                 let pokeName = response.data.name;
                 let pokeIntro = document.getElementById("pokeIntro");
-                let imgUrl = response.data.sprites.front_default;
+                let imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${response.data.id}.png`;
                 let pokeImage = document.createElement("img");
-                pokeImage.id = response.data.id;
+                pokeImage.id = pokeId;
                 pokeImage.src = imgUrl;
-                pokeIntro.appendChild(pokeImage);
                 let pokeTitle = document.createElement("h2");
                 firstChr = pokeName.charAt(0).toUpperCase();
                 lastLetters = pokeName.slice(1);
-                pokeTitle.textContent = "#" + response.data.id + " " + firstChr + lastLetters;
+                pokeTitle.textContent = "#" + pokeId + " " + firstChr + lastLetters;
+                pokeIntro.appendChild(pokeImage);
                 pokeIntro.appendChild(pokeTitle);
             //pokeMain code
                 let pokeMain = document.getElementById("pokeMain");
@@ -73,6 +113,19 @@ function getPokemonInfo(input) {
                     move.textContent = response.data.moves[i].move.name;
                     pokeMisc.appendChild(move);
                 };
+            //Shiny Function
+                setTimeout(() => {
+                    let shiny = false;
+                    pokeImage.addEventListener("click", function() {
+                        if(shiny === false){
+                            pokeImage.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokeId}.png`;
+                            shiny = true;
+                        } else {
+                            pokeImage.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
+                            shiny = false;
+                        }
+                    })
+                }, 500);
             } else {
                 let main = document.getElementById("main");
                 let errorMessage = document.createElement("h1");
@@ -86,7 +139,7 @@ function getPokemonInfo(input) {
 //Search button function
 const allPoke = document.getElementById("allPoke");
 const search = document.getElementById("search");
-let main = document.getElementById("main");
+const main = document.getElementById("main");
 search.addEventListener("click", function() {
     allPoke.hidden = true;
     main.hidden = false;

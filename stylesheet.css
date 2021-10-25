@@ -140,10 +140,6 @@ form img {
 }
 
 .pokeCard:hover {
-    background-color: rgba(207, 207, 207, 0.836);
+    background-color: rgba(183, 189, 204, 0.836);
     transition: 0.5s;
 }
-
-
-
-
